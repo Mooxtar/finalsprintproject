@@ -1,0 +1,81 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<div class="container-lg mt-3" layout:fragment="content" style="width: 500px">
+  <div>
+    <form action="/edittask" method="post">
+      <input type="hidden" th:value="${task.getId()}" name="id">
+      <input type="hidden" th:value="${task.getFolder().getId()}" name="folder_id">
+      <div class="mb-3">
+        <label for="input1" class="form-label">Title:</label>
+        <input type="text" class="form-control" id="input1" name="title" th:value="${task.getTitle()}">
+      </div>
+      <div class="mb-3">
+        <label for="Textarea1" class="form-label">Description:</label>
+        <textarea class="form-control" id="Textarea1" name="description" th:text="${task.getDescription()}" rows="5">
+        </textarea>
+      </div>
+      <div class="mb-3">
+        <label for="select1" class="form-label">Status</label>
+        <select class="form-select" id="select1" name="status">
+          <option th:value="0">TO DO</option>
+          <option th:value="1">In Test</option>
+          <option th:value="2">Done</option>
+          <option th:value="3">Failed</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Save task</button>
+    </form>
+    <div class="mt-3">
+      <label class="form-label" style="font-weight: bold">Comments:</label>
+      <p th:each="comment : ${comments}" th:text="${comment.getComment()}"></p>
+    </div>
+    <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#newCommentModal">
+      New comment
+    </button>
+    <div class="modal fade" id="newCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+      <div class="modal-dialog">
+        <form action="/addcomment" method="post">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel2">New Comment</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" th:value="${task.getId()}" name="id">
+              <label class="form-label" for="input2">Comment:</label>
+              <textarea type="text" id="input2" class="form-control" name="comment" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success">Add</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="mt-3">
+    <button type="button" class="btn btn-danger mt-1" data-bs-toggle="modal" data-bs-target="#deleteTaskModal">
+      Delete task
+    </button>
+    <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form action="/deletetask" method="post">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <input type="hidden" th:value="${task.getId()}" name="id">
+            <input type="hidden" th:value="${task.getFolder().getId()}" name="folder_id">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

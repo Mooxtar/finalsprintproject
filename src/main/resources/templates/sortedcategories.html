@@ -1,0 +1,36 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<div class="container-lg" layout:fragment="content">
+  <div class="row mt-3">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <button type="button" class="btn btn-warning" th:text="${categoryname}" disabled></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped mt-3">
+    <thead>
+    <tr>
+      <th>Task id</th>
+      <th>Task Name</th>
+      <th>Status</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+      <td th:text="${task.getId()}"></td>
+      <td th:text="${task.getTitle()}"></td>
+      <td th:text="${task.getStatus() == 0 ? 'TO DO' : (task.getStatus() == 1 ? 'IN TEST' : (task.getStatus() == 2 ? 'Done' : 'Failed'))}"
+          th:style="${task.getStatus() == 0 ? 'color:blue; font-weight: bold;' : (task.getStatus() == 1 ? 'color:orange; font-weight: bold;' :
+                        (task.getStatus() == 2 ? 'color:lightgreen; font-weight: bold;' : 'color:red; font-weight: bold;'))}"></td>
+      <td>
+        <a th:href="${'/taskdetails/' + task.getId()}" class="btn btn-outline-success">View more</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</html>
